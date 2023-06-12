@@ -9,9 +9,21 @@
 
 <body class="conteudo exercicio">
     <div>
-        <a href="https://google.com.br">Google</a>
+        <a espera-um-pouco href="https://google.com.br" onclick="navegarEm5s(event)">Google</a>
     </div>
     <script>
-        // ...
+        function navegarEm5s(e) {
+            e.preventDefault()
+            setTimeout(() => {
+                window.location.href = e.href
+            }, 5000);
+        }
+
+        // Para não ter que colocar na tag HTML o 'onclick=""'
+        const a = document.querySelector('a')
+        a.onclick = navegarEm5s
+
+        const a = document.querySelector('[espera-um-pouco]')
+        a.onclick = navegarEm5s
     </script>
 </body>
