@@ -79,4 +79,4 @@ const areaDoJogo = document.querySelector('[wm-flappy]')
 barreira.pares.forEach(par => areaDoJogo.appendChild(par.elemento))
 setInterval(() => {
     barreira.animar()
-}, 20);
+}, 10);
