@@ -112,17 +112,31 @@ function Progresso() {
 }
 
 
-// const barreira = new Barreiras(700, 1200, 350, 400)
-// const passaro = new Passaro(700)
-// const areaDoJogo = document.querySelector('[wm-flappy]')
+function sobrepostos(elementoA, elementoB) {
+    const a = elementoA.getBoundingClientRect()
+    const b = elementoB.getBoundingClientRect()
 
-// areaDoJogo.appendChild(passaro.elemento)
-// areaDoJogo.appendChild(new Progresso().elemento)
-// barreira.pares.forEach(par => areaDoJogo.appendChild(par.elemento))
-// setInterval(() => {
-//     barreira.animar()
-//     passaro.animar()
-// }, 10);
+    const horizontal = a.left + a.width >= b.left
+        && b.left + b.width >= a.left
+
+    const vertical = a.top + a.height >= b.top
+        && b.top + b.height >= a.top
+
+    return horizontal && vertical
+}
+
+function colidiu(passaro, barreiras) {
+    let colidiu = false
+    barreiras.pares.forEach(parDeBarreiras => {
+        if (!colidiu) {
+            const superior = parDeBarreiras.superior.elemento
+            const inferior = parDeBarreiras.inferior.elemento
+            colidiu = sobrepostos(passaro.elemento, superior)
+                || sobrepostos(passaro.elemento, inferior)
+        }
+    })
+    return colidiu
+}
 
 function FlappyBird() {
     let pontos = 0
@@ -145,6 +159,10 @@ function FlappyBird() {
         const temporizador = setInterval(() => {
             barreiras.animar()
             passaro.animar()
+
+            if (colidiu(passaro, barreiras)) {
+                clearInterval(temporizador)
+            }
         }, 20)
     }
 }
